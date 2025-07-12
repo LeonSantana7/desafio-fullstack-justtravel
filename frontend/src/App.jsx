@@ -6,7 +6,8 @@ import FilterTasks from "./components/FilterTasks";
 import Footer from "./components/Footer";
 
 // eslint-disable-next-line no-undef
-const API_URL = process.env.REACT_APP_API_URL;
+// const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "https://desafio-fullstack-justtravel-api.onrender.com";
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
