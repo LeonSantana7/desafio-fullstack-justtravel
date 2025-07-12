@@ -90,10 +90,8 @@ export default function App() {
               background: "linear-gradient(to right, #7c3aed, #3b82f6)",
             }}
           >
-            <h2 className="fw-bold text-center mb-1">
-              ✨ Minha Lista de Tarefas
-            </h2>
-            <p className="text-center mb-0">Organize seu dia com estilo</p>
+            <h2 className="fw-bold text-center mb-1">To-do List</h2>
+            <p className="text-center mb-0">Organize seu dia</p>
           </div>
 
           <div className="p-4">
