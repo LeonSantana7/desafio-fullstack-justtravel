@@ -8,10 +8,9 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app)
 
-# --- Configuração do Banco de Dados ---
-# Pega a URL do banco de dados da variável de ambiente que vamos configurar na Render
+
 database_url = os.environ.get('DATABASE_URL')
-# A Render usa 'postgres://', mas SQLAlchemy prefere 'postgresql://'
+
 if database_url and database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql://", 1)
 
@@ -19,9 +18,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-
-# --- Modelo da Tabela de Tarefas ---
-# Define como a tabela de tarefas será estruturada no banco de dados
 
 
 class Task(db.Model):
@@ -42,11 +38,8 @@ class Task(db.Model):
         }
 
 
-# Cria a tabela no banco de dados se ela não existir
 with app.app_context():
     db.create_all()
-
-# --- Rotas da API (Agora usando o Banco de Dados) ---
 
 
 @app.route('/tasks', methods=['GET'])
@@ -61,7 +54,7 @@ def add_task():
     new_task = Task(
         title=data.get('title'),
         priority=data.get('priority'),
-        # O campo createdAt enviado pelo frontend será usado aqui
+
         createdAt=datetime.fromisoformat(
             data.get('createdAt').replace('Z', '+00:00')),
         completed=False
@@ -83,7 +76,6 @@ def update_task(task_id):
     if 'completed' in data:
         task.completed = data['completed']
 
-    # Atualiza a data a cada modificação
     task.createdAt = datetime.utcnow()
 
     db.session.commit()

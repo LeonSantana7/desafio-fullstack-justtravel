@@ -5,13 +5,22 @@ import TaskList from "./components/TaskList";
 import FilterTasks from "./components/FilterTasks";
 import Footer from "./components/Footer";
 
+// eslint-disable-next-line no-undef
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function App() {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("date");
 
   useEffect(() => {
-    axios.get("http://localhost:5000/tasks").then((res) => setTasks(res.data));
+    if (!API_URL) {
+      console.error(
+        "A URL da API não está configurada. Verifique o arquivo .env ou as variáveis de ambiente na Vercel."
+      );
+      return;
+    }
+    axios.get(`${API_URL}/tasks`).then((res) => setTasks(res.data));
   }, []);
 
   const sortTasks = (tasksToSort) => {
@@ -43,7 +52,7 @@ export default function App() {
       completed: false,
       createdAt: new Date().toISOString(),
     };
-    axios.post("http://localhost:5000/tasks", newTask).then((res) => {
+    axios.post(`${API_URL}/tasks`, newTask).then((res) => {
       setTasks([res.data, ...tasks]);
     });
   };
@@ -51,75 +60,77 @@ export default function App() {
   const toggleTask = (id) => {
     const task = tasks.find((t) => t.id === id);
     axios
-      .patch(`http://localhost:5000/tasks/${id}`, {
-        completed: !task.completed,
-      })
+      .patch(`${API_URL}/tasks/${id}`, { completed: !task.completed })
       .then((res) => {
         setTasks(tasks.map((t) => (t.id === id ? res.data : t)));
       });
   };
 
   const editTask = (id, newTitle) => {
-    axios
-      .patch(`http://localhost:5000/tasks/${id}`, { title: newTitle })
-      .then((res) => {
-        setTasks(tasks.map((t) => (t.id === id ? res.data : t)));
-      });
+    axios.patch(`${API_URL}/tasks/${id}`, { title: newTitle }).then((res) => {
+      setTasks(tasks.map((t) => (t.id === id ? res.data : t)));
+    });
   };
 
   const deleteTask = (id) => {
-    axios.delete(`http://localhost:5000/tasks/${id}`).then(() => {
+    axios.delete(`${API_URL}/tasks/${id}`).then(() => {
       setTasks(tasks.filter((t) => t.id !== id));
     });
   };
 
   return (
-    <div className="container px-3">
-      <div className="app-container mx-auto">
-        <div
-          className="p-4 text-white rounded-top"
-          style={{
-            background: "linear-gradient(to right, #7c3aed, #3b82f6)",
-          }}
-        >
-          <h2 className="fw-bold text-center mb-1">To-do List</h2>
-          <p className="text-center mb-0">Organize seu dia</p>
-        </div>
-
-        <div className="p-4">
-          <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-            <FilterTasks filter={filter} setFilter={setFilter} />
-            <div>
-              <label className="me-2 fw-medium text-muted">Ordenar por:</label>
-              <select
-                className="form-select form-select-sm d-inline w-auto"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <option value="date">Data</option>
-                <option value="priority">Prioridade</option>
-              </select>
-            </div>
+    <>
+      <div className="container px-3">
+        <div className="app-container mx-auto">
+          <div
+            className="p-4 text-white rounded-top"
+            style={{
+              background: "linear-gradient(to right, #7c3aed, #3b82f6)",
+            }}
+          >
+            <h2 className="fw-bold text-center mb-1">
+              ✨ Minha Lista de Tarefas
+            </h2>
+            <p className="text-center mb-0">Organize seu dia com estilo</p>
           </div>
 
-          <TaskForm onAddTask={addTask} />
-
-          {filteredTasks.length === 0 ? (
-            <div className="text-center text-muted py-5">
-              <i className="fas fa-tasks fa-3x mb-3"></i>
-              <p>Nenhuma tarefa encontrada</p>
+          <div className="p-4">
+            <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+              <FilterTasks filter={filter} setFilter={setFilter} />
+              <div>
+                <label className="me-2 fw-medium text-muted">
+                  Ordenar por:
+                </label>
+                <select
+                  className="form-select form-select-sm d-inline w-auto"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="date">Data</option>
+                  <option value="priority">Prioridade</option>
+                </select>
+              </div>
             </div>
-          ) : (
-            <TaskList
-              tasks={filteredTasks}
-              onToggle={toggleTask}
-              onDelete={deleteTask}
-              onEdit={editTask}
-            />
-          )}
+
+            <TaskForm onAddTask={addTask} />
+
+            {filteredTasks.length === 0 ? (
+              <div className="text-center text-muted py-5">
+                <i className="fas fa-tasks fa-3x mb-3"></i>
+                <p>Nenhuma tarefa encontrada</p>
+              </div>
+            ) : (
+              <TaskList
+                tasks={filteredTasks}
+                onToggle={toggleTask}
+                onDelete={deleteTask}
+                onEdit={editTask}
+              />
+            )}
+          </div>
         </div>
       </div>
       <Footer />
-    </div>
+    </>
   );
 }
