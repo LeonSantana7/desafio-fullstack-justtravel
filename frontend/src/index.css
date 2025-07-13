@@ -23,6 +23,11 @@ body {
 .task-item {
   animation: fadeInUp 0.3s ease-out;
   border-bottom: 1px solid #eee;
+  transition: background-color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.task-item .task-title {
+  transition: opacity 0.3s ease-in-out;
 }
 
 .task-item:last-child {
