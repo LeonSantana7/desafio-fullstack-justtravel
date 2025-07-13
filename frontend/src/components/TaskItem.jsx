@@ -36,8 +36,20 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
     low: { label: "Baixa", bg: "secondary" },
   };
 
+  // Função para formatar a data (versão corrigida)
+  const formatDate = (dateString) => {
+    // Garante que pegamos apenas a parte da data, mesmo que a hora venha junto
+    const datePart = dateString.split('T')[0]; 
+    const [year, month, day] = datePart.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   return (
-    <li className="list-group-item d-flex justify-content-between align-items-center task-item p-3 gap-3">
+    <li 
+      className={`list-group-item d-flex justify-content-between align-items-center task-item p-3 gap-3 ${
+        task.completed ? 'list-group-item-light' : ''
+      }`}
+    >
       {isEditing ? (
         <div className="d-flex w-100 gap-2">
           <input
@@ -47,35 +59,39 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
             onChange={(e) => setEditedTitle(e.target.value)}
             autoFocus
           />
-          <button className="btn btn-success" onClick={handleSave}>
-            Salvar
-          </button>
-          <button
-            className="btn btn-secondary"
-            onClick={() => setIsEditing(false)}
-          >
-            Cancelar
-          </button>
+          <button className="btn btn-success" onClick={handleSave}>Salvar</button>
+          <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>Cancelar</button>
         </div>
       ) : (
         <>
           <div className="d-flex align-items-center flex-grow-1 gap-3">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              checked={task.completed}
-              onChange={() => onToggle(task.id)}
-              aria-label="Marcar tarefa como concluída"
-            />
+            <div className="form-check form-switch">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                role="switch"
+                style={{ cursor: 'pointer', transform: 'scale(1.3)' }}
+                checked={task.completed}
+                onChange={() => onToggle(task.id)}
+                aria-label="Marcar tarefa como concluída"
+              />
+            </div>
+            
             <div className="d-flex flex-column align-items-start">
-              <span
-                style={{
-                  textDecoration: task.completed ? "line-through" : "none",
-                }}
-              >
-                {task.title}
-              </span>
-              <div>
+              <div className="d-flex align-items-center task-title">
+                {task.completed && (
+                    <i className="fas fa-check-circle text-success me-2"></i>
+                )}
+                <span
+                  style={{
+                    textDecoration: task.completed ? "line-through" : "none",
+                    opacity: task.completed ? 0.5 : 1,
+                  }}
+                >
+                  {task.title}
+                </span>
+              </div>
+              <div style={{ opacity: task.completed ? 0.5 : 1 }}>
                 <span
                   className={`badge bg-${
                     priorityMap[task.priority]?.bg || "secondary"
@@ -84,13 +100,7 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
                   {priorityMap[task.priority]?.label || "Normal"}
                 </span>
                 <small className="text-muted">
-                  Criado em:{" "}
-                  {`${new Date(task.createdAt).toLocaleDateString(
-                    "pt-BR"
-                  )} às ${new Date(task.createdAt).toLocaleTimeString("pt-BR", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}`}
+                  Criado em: {formatDate(task.createdAt)}
                 </small>
               </div>
             </div>

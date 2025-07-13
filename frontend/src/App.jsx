@@ -7,9 +7,6 @@ import Footer from "./components/Footer";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-// teste
-// const API_URL = "https://desafio-fullstack-justtravel-api.onrender.com";
-
 export default function App() {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("all");
@@ -17,9 +14,7 @@ export default function App() {
 
   useEffect(() => {
     if (!API_URL) {
-      console.error(
-        "A URL da API não está configurada. Verifique o arquivo .env ou as variáveis de ambiente na Vercel."
-      );
+      console.error("A URL da API não está configurada.");
       return;
     }
     axios.get(`${API_URL}/tasks`).then((res) => setTasks(res.data));
@@ -48,13 +43,11 @@ export default function App() {
   );
 
   const addTask = (title, priority) => {
-    const newTask = {
+    const newTaskData = {
       title,
       priority,
-      completed: false,
-      createdAt: new Date().toISOString(),
     };
-    axios.post(`${API_URL}/tasks`, newTask).then((res) => {
+    axios.post(`${API_URL}/tasks`, newTaskData).then((res) => {
       setTasks([res.data, ...tasks]);
     });
   };
@@ -114,18 +107,18 @@ export default function App() {
 
             <TaskForm onAddTask={addTask} />
 
-            {filteredTasks.length === 0 ? (
-              <div className="text-center text-muted py-5">
-                <i className="fas fa-tasks fa-3x mb-3"></i>
-                <p>Nenhuma tarefa encontrada</p>
-              </div>
-            ) : (
+            {tasks.length > 0 ? (
               <TaskList
                 tasks={filteredTasks}
                 onToggle={toggleTask}
                 onDelete={deleteTask}
                 onEdit={editTask}
               />
+            ) : (
+              <div className="text-center text-muted py-5">
+                <i className="fas fa-tasks fa-3x mb-3"></i>
+                <p>Nenhuma tarefa encontrada</p>
+              </div>
             )}
           </div>
         </div>
