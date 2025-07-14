@@ -36,18 +36,26 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
     low: { label: "Baixa", bg: "secondary" },
   };
 
-  // Função para formatar a data (versão corrigida)
   const formatDate = (dateString) => {
-    // Garante que pegamos apenas a parte da data, mesmo que a hora venha junto
-    const datePart = dateString.split('T')[0]; 
-    const [year, month, day] = datePart.split('-');
+    if (!dateString) return "";
+    const datePart = dateString.split("T")[0];
+    const [year, month, day] = datePart.split("-");
     return `${day}/${month}/${year}`;
   };
 
+  const formatTime = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   return (
-    <li 
+    <li
       className={`list-group-item d-flex justify-content-between align-items-center task-item p-3 gap-3 ${
-        task.completed ? 'list-group-item-light' : ''
+        task.completed ? "list-group-item-light" : ""
       }`}
     >
       {isEditing ? (
@@ -59,8 +67,15 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
             onChange={(e) => setEditedTitle(e.target.value)}
             autoFocus
           />
-          <button className="btn btn-success" onClick={handleSave}>Salvar</button>
-          <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>Cancelar</button>
+          <button className="btn btn-success" onClick={handleSave}>
+            Salvar
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={() => setIsEditing(false)}
+          >
+            Cancelar
+          </button>
         </div>
       ) : (
         <>
@@ -70,17 +85,17 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
                 className="form-check-input"
                 type="checkbox"
                 role="switch"
-                style={{ cursor: 'pointer', transform: 'scale(1.3)' }}
+                style={{ cursor: "pointer", transform: "scale(1.3)" }}
                 checked={task.completed}
                 onChange={() => onToggle(task.id)}
                 aria-label="Marcar tarefa como concluída"
               />
             </div>
-            
-            <div className="d-flex flex-column align-items-start">
+
+            <div className="d-flex flex-column align-items-start w-100">
               <div className="d-flex align-items-center task-title">
                 {task.completed && (
-                    <i className="fas fa-check-circle text-success me-2"></i>
+                  <i className="fas fa-check-circle text-success me-2"></i>
                 )}
                 <span
                   style={{
@@ -91,7 +106,24 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
                   {task.title}
                 </span>
               </div>
-              <div style={{ opacity: task.completed ? 0.5 : 1 }}>
+
+              {task.startTime && (
+                <div
+                  className="mt-2"
+                  style={{ opacity: task.completed ? 0.5 : 1 }}
+                >
+                  <small className="text-primary fw-bold">
+                    <i className="far fa-clock me-1"></i>
+                    {formatTime(task.startTime)}
+                    {task.endTime && ` - ${formatTime(task.endTime)}`}
+                  </small>
+                </div>
+              )}
+
+              <div
+                className="mt-1"
+                style={{ opacity: task.completed ? 0.5 : 1 }}
+              >
                 <span
                   className={`badge bg-${
                     priorityMap[task.priority]?.bg || "secondary"
@@ -100,7 +132,7 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
                   {priorityMap[task.priority]?.label || "Normal"}
                 </span>
                 <small className="text-muted">
-                  Criado em: {formatDate(task.createdAt)}
+                  Modificado em: {formatDate(task.createdAt)}
                 </small>
               </div>
             </div>
