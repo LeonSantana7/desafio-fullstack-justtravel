@@ -2,9 +2,16 @@
 
 > **Link da Aplicação:** [https://desafio-fullstack-justtravel-ten.vercel.app/](https://desafio-fullstack-justtravel-ten.vercel.app/)
 
+| ℹ️ Nota sobre o Deploy |
+|:---|
+| A aplicação está hospedada em planos gratuitos (Vercel e Render). Por isso, a **primeira inicialização** do servidor de dados pode levar de 30 a 60 segundos. Se as tarefas não carregarem imediatamente, por favor, aguarde um momento ou recarregue a página. |
+
+<br>
+<br>
+
 Uma aplicação web completa para gerenciamento de tarefas, construída com React no frontend e Python/Flask no backend, com dados persistidos em um banco de dados PostgreSQL.
 <p align="center">
-  <img width="441" height="621" alt="image" src="https://github.com/user-attachments/assets/93374b59-8e98-4e32-8748-ae071118a691">
+ <img width="559" height="526" alt="image" src="https://github.com/user-attachments/assets/59a107e6-4804-4278-801f-24b4f44dc129" />
   <br>
   <em>Foto da aplicação</em>
 </p>
