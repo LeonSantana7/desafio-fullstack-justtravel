@@ -52,8 +52,13 @@ export default function App() {
 
   const addTask = (title, priority, startTime, endTime) => {
     const newTaskData = { title, priority };
-    if (startTime) newTaskData.startTime = startTime;
-    if (endTime) newTaskData.endTime = endTime;
+
+    if (startTime) {
+      newTaskData.startTime = new Date(startTime).toISOString();
+    }
+    if (endTime) {
+      newTaskData.endTime = new Date(endTime).toISOString();
+    }
 
     axios.post(`${API_URL}/tasks`, newTaskData).then((res) => {
       const newTasks = [res.data, ...tasks];
@@ -92,7 +97,7 @@ export default function App() {
               background: "linear-gradient(to right, #7c3aed, #3b82f6)",
             }}
           >
-            <h2 className="fw-bold text-center mb-1">Minha Lista de Tarefas</h2>
+            <h2 className="fw-bold text-center mb-1">To-do List</h2>
             <p className="text-center mb-0">Organize seu dia</p>
           </div>
           <div className="p-4">
@@ -107,7 +112,7 @@ export default function App() {
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                 >
-                  <option value="date">Data</option>
+                  <option value="date">Data (Modificação)</option>
                   <option value="priority">Prioridade</option>
                   <option value="startTime">Horário</option>
                 </select>
