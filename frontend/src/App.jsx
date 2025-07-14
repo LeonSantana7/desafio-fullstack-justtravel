@@ -52,8 +52,8 @@ export default function App() {
 
   const addTask = (title, priority, startTime, endTime) => {
     const newTaskData = { title, priority };
-    if (startTime) newTaskData.startTime = new Date(startTime).toISOString();
-    if (endTime) newTaskData.endTime = new Date(endTime).toISOString();
+    if (startTime) newTaskData.startTime = startTime;
+    if (endTime) newTaskData.endTime = endTime;
 
     axios.post(`${API_URL}/tasks`, newTaskData).then((res) => {
       const newTasks = [res.data, ...tasks];
