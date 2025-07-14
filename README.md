@@ -4,7 +4,7 @@
 
 | ℹ️ Nota sobre o Deploy |
 |:---|
-| A aplicação está hospedada em planos gratuitos (Vercel e Render). Por isso, a **primeira inicialização** do servidor de dados pode levar de 30 a 60 segundos. Se as tarefas não carregarem imediatamente, por favor, aguarde um momento ou recarregue a página. |
+| A aplicação está hospedada em planos gratuitos (Vercel e Render). Por isso, a **primeira inicialização** do servidor de dados pode levar de 30 a 60 segundos. <br><br> **Para "acordar" o servidor, por favor, adicione uma nova tarefa.** Se as tarefas não carregarem imediatamente após isso, recarregue a página. |
 
 <br>
 <br>
