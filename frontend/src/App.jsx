@@ -112,7 +112,7 @@ export default function App() {
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                 >
-                  <option value="date">Data (Modificação)</option>
+                  <option value="date">Data</option>
                   <option value="priority">Prioridade</option>
                   <option value="startTime">Horário</option>
                 </select>

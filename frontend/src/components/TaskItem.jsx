@@ -134,7 +134,7 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
                   {priorityMap[task.priority]?.label || "Normal"}
                 </span>
                 <small className="text-muted">
-                  Modificado em: {formatDate(task.createdAt)}
+                  Criado em: {formatDate(task.createdAt)}
                 </small>
               </div>
             </div>
