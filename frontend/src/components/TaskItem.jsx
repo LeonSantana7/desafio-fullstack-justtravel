@@ -43,6 +43,7 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
     return `${day}/${month}/${year}`;
   };
 
+  // --- MUDANÇA AQUI: Nova função para formatar apenas a hora ---
   const formatTime = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -107,6 +108,7 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
                 </span>
               </div>
 
+              {/* --- MUDANÇA AQUI: Mostra os horários se eles existirem --- */}
               {task.startTime && (
                 <div
                   className="mt-2"
@@ -114,7 +116,7 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
                 >
                   <small className="text-primary fw-bold">
                     <i className="far fa-clock me-1"></i>
-                    {formatTime(task.startTime)}
+                    {formatDate(task.startTime)} às {formatTime(task.startTime)}
                     {task.endTime && ` - ${formatTime(task.endTime)}`}
                   </small>
                 </div>
@@ -132,7 +134,7 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }) {
                   {priorityMap[task.priority]?.label || "Normal"}
                 </span>
                 <small className="text-muted">
-                  Modificado em: {formatDate(task.createdAt)}
+                  Criado em: {formatDate(task.createdAt)}
                 </small>
               </div>
             </div>

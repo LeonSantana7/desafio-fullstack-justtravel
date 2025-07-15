@@ -26,7 +26,6 @@ class Task(db.Model):
     createdAt = db.Column(db.DateTime(
         timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
     completed = db.Column(db.Boolean, nullable=False, default=False)
-
     startTime = db.Column(db.DateTime(timezone=True), nullable=True)
     endTime = db.Column(db.DateTime(timezone=True), nullable=True)
 
@@ -91,6 +90,7 @@ def update_task(task_id):
         task.endTime = datetime.fromisoformat(data.get('endTime').replace(
             'Z', '+00:00')) if data.get('endTime') else None
 
+    # Atualiza a data de modificação
     task.createdAt = datetime.now(timezone.utc)
 
     db.session.commit()
