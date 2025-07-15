@@ -11,7 +11,7 @@
 
 Uma aplicação web completa para gerenciamento de tarefas, construída com React no frontend e Python/Flask no backend, com dados persistidos em um banco de dados PostgreSQL.
 <p align="center">
- <img width="559" height="526" alt="image" src="https://github.com/user-attachments/assets/59a107e6-4804-4278-801f-24b4f44dc129" />
+ <img width="336" height="535" alt="image" src="https://github.com/user-attachments/assets/8ca99b4e-f733-4ea5-a6c4-9829ae3a429b" />
   <br>
   <em>Foto da aplicação</em>
 </p>
